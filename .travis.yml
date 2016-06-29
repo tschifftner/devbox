@@ -59,12 +59,33 @@ script:
   # Make sure devbox is installed.
   - curl http://127.0.0.1/
 
+  - php -v
+  - nginx -v
+  - mysql --version
+  - n98-magerun --version
+  - n98-magerun2 --version
+  - composer --version
+  - modman --version
+  - redis-cli --version
+  - aws --version
+  - sudo smbstatus
+
 after_failure:
   - ansible-playbook -i ansible/tests/inventory ansible/tests/test.yml --connection=local --become
   - ansible --version
   - ansible-lint --version
   - curl http://127.0.0.1/
   - ansible -i 127.0.0.1, -m setup all -c local
+  - php -v
+  - nginx -v
+  - mysql --version
+  - n98-magerun --version
+  - n98-magerun2 --version
+  - composer --version
+  - modman --version
+  - redis-cli --version
+  - aws --version
+  - sudo smbstatus
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
