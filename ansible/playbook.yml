@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: true
+  remote_user: root
+
+  pre_tasks:
+    - name: system upgrade
+      apt:
+        upgrade: safe
+        update_cache: yes
+        cache_valid_time: 3600
+
+  roles:
+    - { role: tschifftner.hostname, tags: ['hostname'] }
+    - { role: tschifftner.common, tags: ['common'] }
+    - { role: tschifftner.datetime, tags: ['datetime'] }
+    - { role: tschifftner.mariadb, tags: ['mariadb'] }
+    - { role: tschifftner.samba, tags: ['samba'] }
+    - { role: tschifftner.nginx, tags: ['nginx'] }
+    - { role: tschifftner.php5-fpm, tags: ['php5-fpm'] }
+    - { role: tschifftner.composer, tags: ['composer'] }
+    - { role: tschifftner.n98-magerun, tags: ['n98-magerun'] }
+    - { role: tschifftner.modman, tags: ['modman'] }
+    - { role: tschifftner.redis, tags: ['redis'] }
+    - { role: devbox, tags: ['devbox'] }
+    - { role: tschifftner.motd, tags: ['motd'] }

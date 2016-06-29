@@ -1,0 +1,119 @@
+---
+- set_fact:
+    project: '{{ item }}'
+    working_dir: '/var/www/{{ item.name }}/{{ item.environment }}/releases/develop'
+    projectstorage_dir: '/home/projectstorage/{{ item.name }}'
+    _project_requires_composer: false
+
+- name: Create project storage
+  file:
+    path: '{{ projectstorage_dir }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2777'
+  with_items:
+    - '{{ project.environment }}/shared/media'
+    - '{{ project.environment }}/shared/var'
+    - 'production'
+    - 'bin/deploy'
+
+#- name: Create project structure [magento, writeable]
+#  file:
+#    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+#    state: directory
+#    owner: vagrant
+#    group: www-data
+#    mode: '2777'
+#  with_items: ['shared/media', 'shared/var']
+
+- name: Clone deploy script [magento]
+  git:
+    accept_hostkey: true
+    repo: '{{ project.deploy_scripts }}'
+    dest: '{{ projectstorage_dir }}/bin/deploy'
+    update: false
+    version: '{{ project.deploy_scripts_version | default(omit) }}'
+  become: "{{ project.user | default(project_user) }}"
+  when: project.deploy_scripts is defined
+
+#- name: Clone git repository [magento]
+#  git:
+#    accept_hostkey: true
+#    repo: '{{ project.git }}'
+#    dest: '{{ working_dir }}'
+#    update: false
+#    version: '{{ project.git_version | default(omit) }}'
+#  become: "{{ project.user | default(project_user) }}"
+#  when: project.git is defined
+#
+#- name: Check for composer.json file
+#  register: _project_requires_composer
+#  stat:
+#    path: '{{ working_dir }}/composer.json'
+#
+#
+#- name: Run composer install
+#  composer:
+#    command: 'install'
+#    arguments: '--verbose --no-ansi --no-interaction --prefer-source'
+#    working_dir: '{{ working_dir }}'
+#  become: "{{ project.user | default(project_user) }}"
+#
+#- name: Run modman
+#  command: modman deploy-all
+#  args:
+#    chdir: '{{ working_dir }}'
+#    creates: '{{ working_dir }}/htdocs/app/etc/local.xml'
+
+
+
+
+
+
+
+
+
+
+
+#- name: Ensure symlink to develop exists [magento]
+#  file:
+#    src: '/var/www/{{ project.name }}/{{ project.environment }}/releases/develop'
+#    dest: '/var/www/{{ project.name }}/{{ project.environment }}/releases/current'
+#    state: link
+#    force: true
+#    owner: vagrant
+#    group: www-data
+#  when: project.git is defined
+
+#- name: Create project structure [magento, default]
+#  file:
+#    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+#    state: directory
+#    owner: vagrant
+#    group: www-data
+#    mode: '00775'
+#  with_items: ['releases/current/htdocs']
+#  when: project.git is not defined
+
+#- name: Ensure symlinks exist [magento]
+#  file:
+#    src: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item.src }}'
+#    dest: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item.dest }}'
+#    state: link
+#    force: true
+#    owner: vagrant
+#    group: www-data
+#  with_items: '{{ project_magento_symlinks }}'
+
+- name: Create nginx vhost [magento]
+  notify: reload nginx
+  template:
+    src: "{{ project.nginx_template | default('magento/nginx.conf') }}"
+    dest: '/etc/nginx/sites-enabled/{{ project.name }}'
+
+- name: Create php5-fpm vhost [magento]
+  notify: reload php5-fpm
+  template:
+    src: "{{ project.php_template if project.php_template is defined else 'magento/php5-fpm.conf' }}"
+    dest: '/etc/php5/fpm/pool.d/devbox.{{ project.name }}.conf'

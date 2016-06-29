@@ -1,0 +1,39 @@
+---
+
+nginx_remove_default_vhost: false
+
+mariadb_users:
+  - name: root
+    password: root
+    host: "%"
+    priv: '*.*:ALL,GRANT' #SELECT,INSERT,UPDATE,DELETE,CREATE,ALTER,INDEX,DROP,CREATE TEMPORARY TABLES,CREATE_VIEW,SHOW VIEW,EVENT,TRIGGER,LOCK TABLES,REFERENCES'
+    append_privs: true
+
+#php5_fpm_pools:
+#  - name: 'vagrant'
+#    user: 'vagrant'
+#    prefix: '/var/www/'
+#    tmp_path: '/tmp/php5'
+#    sessions_path: '/tmp/sessions'
+#    logs_path: '/var/log/vhosts/'
+#    project_paths: []
+#    php_admin_value:
+#      error_log: '/var/log/vhosts/php_errors.log'
+#      max_input_vars: 5000
+#      max_execution_time: 300
+#      memory_limit: '256M'
+
+php5_fpm_cronjobs: []
+#  - name: Magento cron for live
+#    user: 'vagrant'
+#    cron_file: '{{ php5_fpm_pools.0.name }}'
+#    job: /bin/sh {{ php5_fpm_pools.0.prefix }}/cron.sh &>> {{ php5_fpm_pools.0.logs_path }}/cron.log
+
+mariadb_admin_user: 'root'
+mariadb_admin_password: 'root'
+
+# samba
+samba_config_file: 'smb.conf'
+samba_users:
+  - name: vagrant
+    password: vagrant

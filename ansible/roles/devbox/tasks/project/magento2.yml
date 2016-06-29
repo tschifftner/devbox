@@ -1,0 +1,33 @@
+---
+- set_fact:
+    project: '{{ item }}'
+
+- name: Create project structure [magento2, default]
+  file:
+    path: '/var/www/{{ project.project }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '00775'
+  with_items: ['releases/current/pub']
+
+- name: Create project structure  [magento2, writeable]
+  file:
+    path: '/var/www/{{ project.project }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2777'
+  with_items: ['shared/media', 'shared/var', 'releases/current/pub/static']
+
+- name: Create nginx vhost [magento2]
+  notify: reload nginx
+  template:
+    src: "{{ project.nginx_template | default('magento2/nginx.conf') }}"
+    dest: '/etc/nginx/sites-enabled/{{ project.name }}'
+
+- name: Create php5-fpm vhost [magento2]
+  notify: reload php5-fpm
+  template:
+    src: "{{ project.php_template if project.php_template is defined else 'magento2/php5-fpm.conf' }}"
+    dest: '/etc/php5/fpm/pool.d/devbox.{{ item.name }}.conf'

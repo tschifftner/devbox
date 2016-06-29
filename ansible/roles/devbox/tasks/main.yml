@@ -1,0 +1,70 @@
+---
+
+- include: databases.yml
+  tags: ['devbox-databases']
+
+
+- include: project/default.yml
+  tags: ['devbox-default']
+  when: (item.type is not defined or item.type == 'default') and (item.remove is not defined or item.remove != true)
+  with_items: '{{ devbox_projects }}'
+
+- include: project/magento.yml
+  tags: ['devbox-magento']
+  when: (item.type is defined and item.type == 'magento') and (item.remove is not defined or item.remove != true)
+  with_items: '{{ devbox_projects }}'
+
+- include: project/magento2.yml
+  tags: ['devbox-magento2']
+  when: (item.type is defined and item.type == 'magento2') and (item.remove is not defined or item.remove != true)
+  with_items: '{{ devbox_projects }}'
+
+
+#- include: cleanup.yml
+#  tags: ['devbox-cleanup']
+
+- include: project/cleanup.yml
+  tags: ['devbox-cleanup']
+  when: item.remove is defined and item.remove == true
+  with_items: '{{ devbox_projects }}'
+
+
+- include: awscli.yml
+  tags: ['devbox-awscli']
+
+- include: motd.yml
+  tags: ['devbox-motd']
+
+
+
+
+
+
+#
+#/var/www/#{new_resource.project}/#{new_resource.environment}/#{name}
+#
+#  user 'systemstorage' do
+#    home '/home/systemstorage'
+#  end
+#
+#  group 'systemstorage' do
+#    action :create
+#  end
+#
+#  %w(database files).each do |name|
+#    directory "/home/systemstorage/systemstorage/#{new_resource.project}/backup/#{new_resource.environment}/#{name}" do
+#      owner 'systemstorage'
+#      group 'systemstorage'
+#      mode 00775
+#      recursive true
+#      action :create
+#    end
+#  end
+#
+#  directory "/home/systemstorage/systemstorage/#{new_resource.project}/bin" do
+#    owner 'systemstorage'
+#    group 'systemstorage'
+#    mode 00775
+#    recursive true
+#    action :create
+#  end

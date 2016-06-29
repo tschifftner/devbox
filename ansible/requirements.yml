@@ -1,0 +1,14 @@
+---
+- src: tschifftner.awscli
+- src: tschifftner.common
+- src: tschifftner.composer
+- src: tschifftner.datetime
+- src: tschifftner.hostname
+- src: tschifftner.mariadb
+- src: tschifftner.modman
+- src: tschifftner.motd
+- src: tschifftner.n98-magerun
+- src: tschifftner.nginx
+- src: tschifftner.php5-fpm
+- src: tschifftner.redis
+- src: tschifftner.samba
