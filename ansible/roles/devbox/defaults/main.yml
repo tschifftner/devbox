@@ -1,5 +1,7 @@
 ---
 
+devbox_projects: []
+
 # Folders required for any project
 project_folders:
   - 'logs'

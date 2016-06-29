@@ -20,6 +20,12 @@ if [ ! -f /home/vagrant/.installed ]; then
     # Add ansible.cfg to pick up roles path.
     #"{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
+    # change working dir
+    cd /vagrant/ansible
+
+    # Install required ansible roles
+    sudo ansible-galaxy install -r /vagrant/ansible/requirements.yml --ignore-errors --force
+
     date > /home/vagrant/.installed
 fi
 
@@ -27,10 +33,7 @@ fi
 cd /vagrant/ansible
 ansible --version
 
-# Install required ansible roles
-sudo ansible-galaxy install -r /vagrant/ansible/requirements.yml --ignore-errors --force
-
 echo "Start ansible playbook"
 echo "ansible-playbook /vagrant/ansible/playbook.yml -e hostname=${HOSTNAME} --connection=local --become"
 ansible-playbook /vagrant/ansible/playbook.yml -e hostname=${HOSTNAME} --connection=local --become
-echo "provisioning finished in $UPTIME seconds"
+echo "provisioning finished in ${UPTIME} seconds"

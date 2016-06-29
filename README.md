@@ -36,10 +36,35 @@ net use B: \\192.168.33.99\www /persistent:no /user:vagrant vagrant
 
 # Installation
 
-# 1. Install required software
+### 1. Install required software
 
 - [Vagrant 1.8+](http://vagrantup.com)
 - [VirtualBox 5.0](https://www.virtualbox.org/)
+
+### 2. Clone repository
+
+```
+git clone git@github.com:tschifftner/devbox.git
+```
+
+### 3. Start vagrant
+```
+cd devbox 
+vagrant up
+```
+
+The box will be downloaded (on first start) and started. Provisioning 
+will be done automatically after startup.
+ 
+### 4. Reprovision / Troubles
+
+If the box did not provision properly or you want to rerun the
+provisioning script:
+
+```
+vagrant ssh
+/vagrant/ansible/provision.sh
+```
 
 
 ### Magento 2 Installation

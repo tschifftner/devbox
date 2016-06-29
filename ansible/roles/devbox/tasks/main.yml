@@ -1,22 +1,23 @@
 ---
 
 - include: databases.yml
+  when: devbox_projects|length
   tags: ['devbox-databases']
 
 
 - include: project/default.yml
   tags: ['devbox-default']
-  when: (item.type is not defined or item.type == 'default') and (item.remove is not defined or item.remove != true)
+  when: devbox_projects|length and (item.type is not defined or item.type == 'default') and (item.remove is not defined or item.remove != true)
   with_items: '{{ devbox_projects }}'
 
 - include: project/magento.yml
   tags: ['devbox-magento']
-  when: (item.type is defined and item.type == 'magento') and (item.remove is not defined or item.remove != true)
+  when: devbox_projects|length and (item.type is defined and item.type == 'magento') and (item.remove is not defined or item.remove != true)
   with_items: '{{ devbox_projects }}'
 
 - include: project/magento2.yml
   tags: ['devbox-magento2']
-  when: (item.type is defined and item.type == 'magento2') and (item.remove is not defined or item.remove != true)
+  when: devbox_projects|length and (item.type is defined and item.type == 'magento2') and (item.remove is not defined or item.remove != true)
   with_items: '{{ devbox_projects }}'
 
 
@@ -25,14 +26,16 @@
 
 - include: project/cleanup.yml
   tags: ['devbox-cleanup']
-  when: item.remove is defined and item.remove == true
+  when: devbox_projects|length and item.remove is defined and item.remove == true
   with_items: '{{ devbox_projects }}'
 
 
 - include: awscli.yml
+  when: devbox_projects|length
   tags: ['devbox-awscli']
 
 - include: motd.yml
+  when: devbox_projects|length
   tags: ['devbox-motd']
 
 
