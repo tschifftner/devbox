@@ -3,13 +3,6 @@
   become: true
   remote_user: root
 
-  pre_tasks:
-    - name: system upgrade
-      apt:
-        upgrade: safe
-        update_cache: yes
-        cache_valid_time: 3600
-
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }
     - { role: tschifftner.common, tags: ['common'] }

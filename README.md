@@ -7,8 +7,10 @@ to help developing on a modern virtual server
 
 OS: Debian Jessie 64bit
 
+- awscli
 - composer
 - mariadb
+- motd
 - modman
 - n98-magerun
 - n98-magerun2
@@ -59,7 +61,7 @@ chmod -R 777 var pub/media/ pub/static app/etc
 ### Create admin user
 
 ```
-php bin/magento admin:user:create --admin-user=admin --admin-password=test123 --admin-firstname=Tobias --admin-lastname=Schifftner --admin-email=ts@ambimax.de
+php bin/magento admin:user:create --admin-user=admin --admin-password=test123 --admin-firstname=Test --admin-lastname=Admin --admin-email=admin@example.org
 ```
 
 Credentials:
@@ -107,3 +109,12 @@ Therefore nginx and php root is /htdocs (!)
 ### Magento 2
 
 Magento 2 is handled by composer and should go directly into ```/var/www/{{project.name}}/{{project.environment}}/releases/current```
+
+
+## License
+
+MIT / BSD
+
+## Author Information
+
+ - Tobias Schifftner, @tschifftner
