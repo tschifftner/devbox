@@ -22,5 +22,6 @@
     - { role: tschifftner.n98-magerun, tags: ['n98-magerun'] }
     - { role: tschifftner.modman, tags: ['modman'] }
     - { role: tschifftner.redis, tags: ['redis'] }
+    - { role: tschifftner.awscli, tags: ['awscli'] }
     - { role: devbox, tags: ['devbox'] }
     - { role: tschifftner.motd, tags: ['motd'] }
