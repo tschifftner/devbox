@@ -54,18 +54,16 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
 
   # ansible-lint checks for best practice
-  - ansible-lint ansible/playbook.yml
+#  - ansible-lint ansible/playbook.yml
 
-  # Make sure awscli is installed.
-#  - >
-#    cat /etc/motd | grep 'Jenkins'
-#    && (echo 'motd is installed' && exit 0)
-#    || (echo 'motd is not installed' && exit 1)
+  # Make sure devbox is installed.
+  - curl http://127.0.0.1/
 
 after_failure:
   - ansible-playbook -i ansible/tests/inventory ansible/tests/test.yml --connection=local --become
   - ansible --version
   - ansible-lint --version
+  - curl http://127.0.0.1/
   - ansible -i 127.0.0.1, -m setup all -c local
 
 notifications:
