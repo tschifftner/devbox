@@ -1,4 +1,6 @@
 ---
+- include: bootstrap.yml
+  tags: ['devbox-bootstrap']
 
 - include: databases.yml
   when: devbox_projects|length

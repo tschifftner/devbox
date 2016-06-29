@@ -1,0 +1,6 @@
+---
+
+- name: Setup default html page
+  template:
+    src: bootstrap/index.html
+    dest: /var/www/html/index.nginx-debian.html
