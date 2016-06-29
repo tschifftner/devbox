@@ -9,7 +9,7 @@ if [ ! -f /home/vagrant/.installed ]; then
 
     # Install required packages
     sudo aptitude install -y software-properties-common python-pip libxml2-dev python-dev sshpass git curl build-essential libssl-dev libffi-dev
-    sudo pip install --upgrade cryptography markupsafe jinja2 ansible
+    sudo pip install --upgrade markupsafe jinja2 ansible
 
     # Setup ansible for local use
     sudo mkdir -p /etc/ansible/
@@ -25,11 +25,12 @@ fi
 
 # change working dir
 cd /vagrant/ansible
+ansible --version
 
 # Install required ansible roles
 sudo ansible-galaxy install -r /vagrant/ansible/requirements.yml --ignore-errors --force
 
 echo "Start ansible playbook"
-echo "sudo ansible-playbook /vagrant/ansible/playbook.yml -e hostname=$HOSTNAME --connection=local"
-ansible-playbook /vagrant/ansible/playbook.yml -e hostname=${HOSTNAME} --connection=local --sudo
+echo "ansible-playbook /vagrant/ansible/playbook.yml -e hostname=${HOSTNAME} --connection=local --become"
+ansible-playbook /vagrant/ansible/playbook.yml -e hostname=${HOSTNAME} --connection=local --become
 echo "provisioning finished in $UPTIME seconds"
