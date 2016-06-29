@@ -1,5 +1,5 @@
 ---
-
+php5_fpm_remove_default_pool: false
 nginx_remove_default_vhost: false
 
 mariadb_users:
