@@ -15,6 +15,12 @@
       include_vars: 'tests/vars.yml'
       when: travis is defined
 
+    - name: Create vagrant user
+      user:
+        name: vagrant
+        state: present
+      when: travis is defined
+
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }
     - { role: tschifftner.common, tags: ['common'] }
