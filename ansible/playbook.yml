@@ -4,18 +4,18 @@
   remote_user: root
 
   pre_tasks:
-    - name: system upgrade
-      apt:
-        upgrade: safe
-        update_cache: yes
-        cache_valid_time: 3600
-      when: ansible_user_id != 'travis'
-
     - name: Remove default nginx pool
       debug: msg="{{nginx_remove_default_vhost}}"
 
     - name: Remove default php5-fpm pool
       debug: msg="{{php5_fpm_remove_default_pool}}"
+
+    - name: system upgrade
+      apt:
+        upgrade: safe
+        update_cache: yes
+        cache_valid_time: 3600
+      when: "{{ansible_user_id}} != 'travis'"
 
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }
