@@ -2,6 +2,24 @@
 #- set_fact:
 #    project: '{{ item }}'
 
+- name: Create project structure [default, writeable]
+  file:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2775'
+  with_items: ['logs', 'releases']
+
+- name: Create project structure [default, world-writeable]
+  file:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2777'
+  with_items: ['sessions', 'tmp']
+
 - name: Create project structure [magento2, default]
   file:
     path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'

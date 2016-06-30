@@ -38,6 +38,16 @@
     - 'production'
     - 'bin/deploy'
 
+- name: Create project structure [magento2, default]
+  file:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '00775'
+  with_items: ['releases/current/htdocs']
+
+
 - name: Create project structure [magento, writeable]
   file:
     path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
