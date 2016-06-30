@@ -3,6 +3,8 @@
   become: true
   remote_user: root
 
+  include_vars: ../group_vars/all/default.yml
+
   pre_tasks:
     - name: Remove default nginx pool
       debug: msg="{{nginx_remove_default_vhost}}"
