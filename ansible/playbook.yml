@@ -10,15 +10,15 @@
     - name: Remove default php5-fpm pool
       debug: msg="{{php5_fpm_remove_default_pool}}"
 
-    - name: Ansible user id
-      debug: msg="{{ansible_user_id}}"
+    - name: Travis is defined
+      debug: msg="{{travis}}"
 
-#    - name: system upgrade
-#      apt:
-#        upgrade: safe
-#        update_cache: yes
-#        cache_valid_time: 3600
-#      when: ansible_user_id != "travis"
+    - name: system upgrade
+      apt:
+        upgrade: safe
+        update_cache: yes
+        cache_valid_time: 3600
+      when: travis is not defined
 
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }

@@ -44,11 +44,11 @@ script:
   - "ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --connection=local --become"
+  - ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --connection=local --become --extra-vars "travis=true"
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --connection=local --become
+    ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --connection=local --become --extra-vars "travis=true"
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
@@ -71,7 +71,7 @@ script:
   - sudo smbstatus
 
 after_failure:
-  - ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --connection=local --become
+  - ansible-playbook -i ansible/tests/inventory ansible/playbook.yml --connection=local --become --extra-vars "travis=true"
   - ansible --version
   - ansible-lint --version
   - curl http://127.0.0.1/
