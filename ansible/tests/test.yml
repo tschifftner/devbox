@@ -3,6 +3,13 @@
   become: true
   remote_user: root
 
+  pre_tasks:
+    - name: Remove default nginx pool
+      debug: msg="{{nginx_remove_default_vhost}}"
+
+    - name: Remove default php5-fpm pool
+      debug: msg="{{php5_fpm_remove_default_pool}}"
+
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }
     - { role: tschifftner.common, tags: ['common'] }
@@ -15,5 +22,6 @@
     - { role: tschifftner.n98-magerun, tags: ['n98-magerun'] }
     - { role: tschifftner.modman, tags: ['modman'] }
     - { role: tschifftner.redis, tags: ['redis'] }
+    - { role: tschifftner.awscli, tags: ['awscli'] }
     - { role: devbox, tags: ['devbox'] }
     - { role: tschifftner.motd, tags: ['motd'] }
