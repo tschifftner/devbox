@@ -1,6 +1,6 @@
 ---
-- set_fact:
-    project: '{{ item }}'
+#- set_fact:
+#    project: '{{ item }}'
 
 - name: Create project structure [default, writeable]
   file:

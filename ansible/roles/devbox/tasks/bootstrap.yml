@@ -1,6 +1,12 @@
 ---
 
+- name: Setup default nginx vhost
+  template:
+    src: bootstrap/default.conf
+    dest: /etc/nginx/sites-enabled/default
+  notify: nginx reload
+
 - name: Setup default html page
   template:
     src: bootstrap/index.html
-    dest: /var/www/html/index.nginx-debian.html
+    dest: /usr/share/nginx/html/index.html

@@ -11,16 +11,22 @@
   tags: ['devbox-default']
   when: devbox_projects|length and (item.type is not defined or item.type == 'default') and (item.remove is not defined or item.remove != true)
   with_items: '{{ devbox_projects }}'
+  loop_control:
+    loop_var: project
 
 - include: project/magento.yml
   tags: ['devbox-magento']
   when: devbox_projects|length and (item.type is defined and item.type == 'magento') and (item.remove is not defined or item.remove != true)
   with_items: '{{ devbox_projects }}'
+  loop_control:
+    loop_var: project
 
 - include: project/magento2.yml
   tags: ['devbox-magento2']
   when: devbox_projects|length and (item.type is defined and item.type == 'magento2') and (item.remove is not defined or item.remove != true)
   with_items: '{{ devbox_projects }}'
+  loop_control:
+    loop_var: project
 
 
 #- include: cleanup.yml
@@ -30,6 +36,8 @@
   tags: ['devbox-cleanup']
   when: devbox_projects|length and item.remove is defined and item.remove == true
   with_items: '{{ devbox_projects }}'
+  loop_control:
+    loop_var: project
 
 
 - include: awscli.yml

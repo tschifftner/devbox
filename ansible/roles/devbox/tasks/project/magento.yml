@@ -1,8 +1,10 @@
 ---
 - set_fact:
-    project: '{{ item }}'
-    working_dir: '/var/www/{{ item.name }}/{{ item.environment }}/releases/develop'
-    projectstorage_dir: '/home/projectstorage/{{ item.name }}'
+#    project: '{{ item }}'
+#    working_dir: '/var/www/{{ item.name }}/{{ item.environment }}/releases/develop'
+#    projectstorage_dir: '/home/projectstorage/{{ item.name }}'
+    working_dir: '/var/www/{{ project.name }}/{{ project.environment }}/releases/develop'
+    projectstorage_dir: '/home/projectstorage/{{ project.name }}'
     _project_requires_composer: false
 
 - name: Create project storage
