@@ -77,6 +77,8 @@ after_failure:
   - curl http://127.0.0.1/
   - ansible -i 127.0.0.1, -m setup all -c local
   - php -v
+  - sudo service php5-fpm status
+  - sudo service nginx status
   - nginx -v
   - mysql --version
   - n98-magerun --version
@@ -86,6 +88,10 @@ after_failure:
   - redis-cli --version
   - aws --version
   - sudo smbstatus
+  - ls -l /etc/php5/fpm/pool.d/
+  - cat /etc/php5/fpm/pool.d/*
+  - ls -l /etc/nginx/sites-enabled/
+  - cat /etc/nginx/sites-enabled/*
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6

@@ -1,5 +1,7 @@
 # ambimax® devbox
 
+[![Build Status](https://travis-ci.org/tschifftner/devbox.svg)](https://travis-ci.org/tschifftner/devbox)
+
 This vagrant box is heavily inspired by @fbrnc unibox and is supposed
 to help developing on a modern virtual server
 
@@ -66,14 +68,22 @@ vagrant ssh
 /vagrant/ansible/provision.sh
 ```
 
+### Update provisioning scripts
 
-### Magento 2 Installation
+To update to the latest ansible roles from ansible galaxy use:
+
+```
+vagrant ssh
+/vagrant/ansible/update.sh
+```
+
+## Magento 2 Installation
 
 ```
 composer create-project magento/project-community-edition <installation dir>
 ```
 
-# set permissions for installation
+### set permissions for installation
 ```
 chmod -R 777 var pub/media/ pub/static app/etc
 ```
