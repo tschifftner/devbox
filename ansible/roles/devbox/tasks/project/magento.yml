@@ -7,6 +7,24 @@
     projectstorage_dir: '/home/projectstorage/{{ project.name }}'
     _project_requires_composer: false
 
+- name: Create project structure [default, writeable]
+  file:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2775'
+  with_items: ['logs', 'releases']
+
+- name: Create project structure [default, world-writeable]
+  file:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2777'
+  with_items: ['sessions', 'tmp']
+
 - name: Create project storage
   file:
     path: '{{ projectstorage_dir }}/{{ item }}'
@@ -20,14 +38,14 @@
     - 'production'
     - 'bin/deploy'
 
-#- name: Create project structure [magento, writeable]
-#  file:
-#    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
-#    state: directory
-#    owner: vagrant
-#    group: www-data
-#    mode: '2777'
-#  with_items: ['shared/media', 'shared/var']
+- name: Create project structure [magento, writeable]
+  file:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    state: directory
+    owner: vagrant
+    group: www-data
+    mode: '2777'
+  with_items: ['shared/media', 'shared/var']
 
 - name: Clone deploy script [magento]
   git:
