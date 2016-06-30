@@ -76,6 +76,7 @@ after_failure:
   - ansible-lint --version
   - curl http://127.0.0.1/
   - ansible -i 127.0.0.1, -m setup all -c local
+  - ansible -i ansible/tests/inventory, -m setup all -c local
   - php -v
   - sudo service php5-fpm status
   - sudo service nginx status
