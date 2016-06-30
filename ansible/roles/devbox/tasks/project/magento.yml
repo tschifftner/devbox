@@ -100,8 +100,8 @@
 
 #- name: Ensure symlinks exist [magento]
 #  file:
-#    src: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item.src }}'
-#    dest: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item.dest }}'
+#    src: '/var/www/{{ project.name }}/{{ project.environment }}/{{ project.src }}'
+#    dest: '/var/www/{{ project.name }}/{{ project.environment }}/{{ project.dest }}'
 #    state: link
 #    force: true
 #    owner: vagrant

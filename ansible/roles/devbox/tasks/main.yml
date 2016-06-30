@@ -9,21 +9,21 @@
 
 - include: project/default.yml
   tags: ['devbox-default']
-  when: devbox_projects|length and (item.type is not defined or item.type == 'default') and (item.remove is not defined or item.remove != true)
+  when: devbox_projects|length and (project.type is not defined or project.type == 'default') and (project.remove is not defined or project.remove != true)
   with_items: '{{ devbox_projects }}'
   loop_control:
     loop_var: project
 
 - include: project/magento.yml
   tags: ['devbox-magento']
-  when: devbox_projects|length and (item.type is defined and item.type == 'magento') and (item.remove is not defined or item.remove != true)
+  when: devbox_projects|length and (project.type is defined and project.type == 'magento') and (project.remove is not defined or project.remove != true)
   with_items: '{{ devbox_projects }}'
   loop_control:
     loop_var: project
 
 - include: project/magento2.yml
   tags: ['devbox-magento2']
-  when: devbox_projects|length and (item.type is defined and item.type == 'magento2') and (item.remove is not defined or item.remove != true)
+  when: devbox_projects|length and (project.type is defined and project.type == 'magento2') and (project.remove is not defined or project.remove != true)
   with_items: '{{ devbox_projects }}'
   loop_control:
     loop_var: project
@@ -34,7 +34,7 @@
 
 - include: project/cleanup.yml
   tags: ['devbox-cleanup']
-  when: devbox_projects|length and item.remove is defined and item.remove == true
+  when: devbox_projects|length and project.remove is defined and project.remove == true
   with_items: '{{ devbox_projects }}'
   loop_control:
     loop_var: project

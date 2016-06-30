@@ -30,4 +30,4 @@
   notify: reload php5-fpm
   template:
     src: "{{ project.php_template if project.php_template is defined else 'magento2/php5-fpm.conf' }}"
-    dest: '/etc/php5/fpm/pool.d/devbox.{{ item.name }}.conf'
+    dest: '/etc/php5/fpm/pool.d/devbox.{{ project.name }}.conf'
