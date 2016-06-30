@@ -4,21 +4,16 @@
   remote_user: root
 
   pre_tasks:
-    - name: Remove default nginx pool
-      debug: msg="{{nginx_remove_default_vhost}}"
-
-    - name: Remove default php5-fpm pool
-      debug: msg="{{php5_fpm_remove_default_pool}}"
-
-    - name: Travis is defined
-      debug: msg="{{travis}}"
-
     - name: system upgrade
       apt:
         upgrade: safe
         update_cache: yes
         cache_valid_time: 3600
       when: travis is not defined
+
+    - name: Include travis specific variables
+      include_vars: 'tests/vars.yml'
+      when: travis is defined
 
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }
