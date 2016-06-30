@@ -15,7 +15,7 @@
         upgrade: safe
         update_cache: yes
         cache_valid_time: 3600
-      when: "{{ansible_user_id}} != 'travis'"
+      when: ansible_user_id != "travis"
 
   roles:
     - { role: tschifftner.hostname, tags: ['hostname'] }
