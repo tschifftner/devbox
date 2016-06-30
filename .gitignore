@@ -8,6 +8,4 @@ ansible/roles/ansible-role-motd
 ansible/all.yml
 ansible/webserver.yml
 ansible/vars
-ansible/templates
-ansible/group_vars/all/nginx.yml
 ansible/roles/devbox/templates/motd

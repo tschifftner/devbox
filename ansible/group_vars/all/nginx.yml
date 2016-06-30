@@ -1,0 +1,7 @@
+---
+nginx_additional_templates:
+  - src: 'nginx/snippets/magento.conf'
+    dest: '/etc/nginx/snippets/magento.conf'
+
+  - src: 'nginx/snippets/magento2.conf'
+    dest: '/etc/nginx/snippets/magento2.conf'
