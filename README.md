@@ -101,6 +101,28 @@ devbox_projects:
     server_alias: dev2.local
     databases: ['dev2_local', 'dev3_local']
     #remove: true
+    helper:
+      - name: fullsync
+        info: 'Synchronizes full media in projectstorage folder with aws s3'
+        command: 'aws --profile demo s3 cp --recursive s3://bucket/demo/backup/production /home/projectstorage/demo/backup/production'
+
+      - name: fastsync
+        info: 'Synchronises database but only files timestamp file'
+        command: >
+          aws --profile demo s3 cp --recursive s3://bucket/demo/backup/production/database /home/projectstorage/demo/backup/production/database &&
+          aws --profile demo s3 cp s3://bucket/demo/backup/production/files/created.txt /home/projectstorage/demo/backup/production/files/created.txt
+
+      - name: reset
+        info: 'Imports latest database and synchronises media files with projectstorage'
+        command:  '/home/projectstorage/demo/bin/deploy/project_reset.sh -p /var/www/demo/devbox/releases/current/htdocs/ -s /home/projectstorage/demo/backup/production'
+
+      - name: cleanup
+        info: 'Removes all releases except for current'
+        command: '/home/projectstorage/demo/bin/deploy/cleanup.sh -r /var/www/demo/devbox/releases -n 1'
+
+      - name: install
+        info: 'deploys full project including database import and media synchronisation'
+        command: '/home/projectstorage/demo/bin/deploy/deploy.sh -d -e devbox -a demo -r s3://bucket/demo/builds/demo.de.tar.gz -t /var/www/demo/devbox'
 
   - name: demo2
     environment: devbox
@@ -138,6 +160,37 @@ devbox_projects:
 
       Install
       /home/projectstorage/demo_project/bin/deploy/deploy.sh -d -e devbox -a demo_project -r s3://bucket/demo_project/builds/demo_project.de.tar.gz -t /var/www/demo_project/devbox
+```
+
+## Helper scripts
+
+Helper scripts are generated and can be called by entering the name of the project.
+For example ```demo```
+Please define available helpers like so:
+
+```
+    helper:
+      - name: fullsync
+        info: 'Synchronizes full media in projectstorage folder with aws s3'
+        command: 'aws --profile demo s3 cp --recursive s3://bucket/demo/backup/production /home/projectstorage/demo/backup/production'
+
+      - name: fastsync
+        info: 'Synchronises database but only files timestamp file'
+        command: >
+          aws --profile demo s3 cp --recursive s3://bucket/demo/backup/production/database /home/projectstorage/demo/backup/production/database &&
+          aws --profile demo s3 cp s3://bucket/demo/backup/production/files/created.txt /home/projectstorage/demo/backup/production/files/created.txt
+
+      - name: reset
+        info: 'Imports latest database and synchronises media files with projectstorage'
+        command:  '/home/projectstorage/demo/bin/deploy/project_reset.sh -p /var/www/demo/devbox/releases/current/htdocs/ -s /home/projectstorage/demo/backup/production'
+
+      - name: cleanup
+        info: 'Removes all releases except for current'
+        command: '/home/projectstorage/demo/bin/deploy/cleanup.sh -r /var/www/demo/devbox/releases -n 1'
+
+      - name: install
+        info: 'deploys full project including database import and media synchronisation'
+        command: '/home/projectstorage/demo/bin/deploy/deploy.sh -d -e devbox -a demo -r s3://bucket/demo/builds/demo.de.tar.gz -t /var/www/demo/devbox'
 ```
 
 _File can be named differently but will not be in .gitignore_
