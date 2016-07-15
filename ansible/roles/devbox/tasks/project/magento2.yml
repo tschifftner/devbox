@@ -20,14 +20,26 @@
     mode: '2777'
   with_items: ['sessions', 'tmp']
 
-- name: Create project structure [magento2, default]
+- name: Check if current symlink exists
+  register: _current_symlink
+  stat:
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/releases/current'
+
+- name: Create dummy project structure [magento2, default]
   file:
-    path: '/var/www/{{ project.name }}/{{ project.environment }}/{{ item }}'
+    path: '/var/www/{{ project.name }}/{{ project.environment }}/releases/build_dummy/pub'
     state: directory
     owner: vagrant
     group: www-data
     mode: '00775'
-  with_items: ['releases/current/pub']
+  when: _current_symlink.stat.islnk is not defined
+
+- name: Set symlink  [magento2, default]
+  file:
+    src: '/var/www/{{ project.name }}/{{ project.environment }}/releases/build_dummy'
+    dest: '/var/www/{{ project.name }}/{{ project.environment }}/releases/current'
+    state: link
+  when: _current_symlink.stat.islnk is not defined
 
 - name: Create project structure  [magento2, writeable]
   file:
