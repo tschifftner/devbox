@@ -162,6 +162,11 @@ devbox_projects:
       /home/projectstorage/demo_project/bin/deploy/deploy.sh -d -e devbox -a demo_project -r s3://bucket/demo_project/builds/demo_project.de.tar.gz -t /var/www/demo_project/devbox
 ```
 
+_File can be named differently but will not be in .gitignore_
+
+Run ```/vagrant/ansible/provision.sh``` to create all projects
+
+
 ## Helper scripts
 
 Helper scripts are generated and can be called by entering the name of the project.
@@ -193,9 +198,11 @@ Please define available helpers like so:
         command: '/home/projectstorage/demo/bin/deploy/deploy.sh -d -e devbox -a demo -r s3://bucket/demo/builds/demo.de.tar.gz -t /var/www/demo/devbox'
 ```
 
-_File can be named differently but will not be in .gitignore_
+To update helper scripts only:
 
-Run ```/vagrant/ansible/provision.sh``` to create all projects
+```
+ansible-playbook /vagrant/ansible/playbook.yml --connection=local --become --tags devbox-helper
+```
 
 ## Magento 2 Installation
 
