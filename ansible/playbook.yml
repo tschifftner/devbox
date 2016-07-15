@@ -8,7 +8,7 @@
       apt:
         upgrade: safe
         update_cache: yes
-        cache_valid_time: 3600
+        cache_valid_time: 86400
       when: travis is not defined
 
     - name: Include travis specific variables
