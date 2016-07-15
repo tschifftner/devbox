@@ -48,6 +48,10 @@
   when: devbox_projects|length
   tags: ['devbox-motd']
 
+- include: helper.yml
+  when: devbox_projects|length
+  tags: ['devbox-helper']
+
 
 
 

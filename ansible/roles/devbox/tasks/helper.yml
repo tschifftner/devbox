@@ -1,0 +1,11 @@
+---
+
+- name: create shell project sync helper
+  template:
+    src: 'helper/project-sync-wrapper.sh'
+    dest: '/usr/local/bin/{{ item.name }}'
+    owner: 'vagrant'
+    group: 'vagrant'
+    mode: '0755'
+  when: item.helper is defined
+  with_items: '{{ devbox_projects }}'
