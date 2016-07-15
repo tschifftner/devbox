@@ -212,6 +212,32 @@ Therefore nginx and php root is /htdocs (!)
 
 Magento 2 is handled by composer and should go directly into ```/var/www/{{project.name}}/{{project.environment}}/releases/current```
 
+## Add additional HDD
+
+```
+sudo fdisk -l
+sudo fdisk /dev/sdb
+p) to print partitions
+n) to start new partition
+p) to print partitions
+w) to write partition to disk
+q) to quit fdisk
+
+sudo fdisk -l
+sudo mkfs.ext4 /dev/sdb1
+```
+
+### Mount on startup
+
+Create mount folder
+```
+sudo mkdir /www
+```
+
+Add mount options to ```/etc/fstab```
+```
+/dev/sdb1 /www ext4 defaults,relatime 1 1
+```
 
 ## License
 
