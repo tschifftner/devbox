@@ -9,6 +9,22 @@ mariadb_users:
     priv: '*.*:ALL,GRANT' #SELECT,INSERT,UPDATE,DELETE,CREATE,ALTER,INDEX,DROP,CREATE TEMPORARY TABLES,CREATE_VIEW,SHOW VIEW,EVENT,TRIGGER,LOCK TABLES,REFERENCES'
     append_privs: true
 
+php5_ini:
+  expose_php: On
+  memory_limit: 512M
+  max_execution_time: 300
+  max_input_time: 60
+  max_input_vars: 5000
+  realpath_cache_size: 32K
+  realpath_cache_ttl: 120
+  upload_max_filesize: 64M
+  post_max_size: 32M
+  date_timezone: "Europe/Berlin"
+  sendmail_path: "/usr/sbin/sendmail -t -i"
+  error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
+  display_errors: "On"
+  display_startup_errors: "Off"
+
 #php5_fpm_pools:
 #  - name: 'vagrant'
 #    user: 'vagrant'
