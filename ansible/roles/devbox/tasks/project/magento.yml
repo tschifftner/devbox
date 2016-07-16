@@ -158,3 +158,11 @@
   template:
     src: "{{ project.php_template if project.php_template is defined else 'magento/php5-fpm.conf' }}"
     dest: '/etc/php5/fpm/pool.d/devbox.{{ project.name }}.conf'
+
+- name: 'cronjob [magento]'
+  cron:
+    name: 'cronjob for {{ project.name }}'
+    minute: '*/1'
+    job: '(cd /var/www/{{ project.name }}/{{ project.environment }}/releases/current/ && ./cron.sh >> var/log/magento.cron.log)'
+    cron_file: '{{ project.name }}'
+    user: 'vagrant'
