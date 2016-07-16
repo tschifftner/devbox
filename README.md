@@ -301,7 +301,7 @@ Add mount options to ```/etc/fstab```
 
 ## License
 
-MIT / BSD
+[MIT License](http://choosealicense.com/licenses/mit/)
 
 ## Author Information
 
