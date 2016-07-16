@@ -61,3 +61,29 @@
   template:
     src: "{{ project.php_template if project.php_template is defined else 'magento2/php5-fpm.conf' }}"
     dest: '/etc/php5/fpm/pool.d/devbox.{{ project.name }}.conf'
+
+- name: 'set 1. cronjob [magento2]'
+  cron:
+    name: '1. cronjob {{ project.name }}'
+    minute: '*/1'
+    job: '(cd /var/www/{{ project.name }}/{{ project.environment }}/releases/current/ && /usr/bin/php bin/magento cron:run | grep -v "Ran jobs by schedule" >> var/log/magento.cron.log)'
+    cron_file: '{{ project.name }}'
+    user: 'vagrant'
+
+- name: 'set 2. cronjob [magento2]'
+  cron:
+    name: '2. cronjob {{ project.name }}'
+    minute: '*/1'
+    #job: '/usr/bin/php /var/www/{{ project.name }}/{{ project.environment }}/releases/current/update/cron.php [>> /log/file &]'
+    job: '(cd /var/www/{{ project.name }}/{{ project.environment }}/releases/current/ && /usr/bin/php update/cron.php >> var/log/update.cron.log)'
+    cron_file: '{{ project.name }}'
+    user: 'vagrant'
+
+- name: 'set 3. cronjob [magento2]'
+  cron:
+    name: '3. cronjob {{ project.name }}'
+    minute: '*/1'
+    #job: '/usr/bin/php /var/www/{{ project.name }}/{{ project.environment }}/releases/current/bin/magento setup:cron:run [>> /log/file &'
+    job: '(cd /var/www/{{ project.name }}/{{ project.environment }}/releases/current/ && /usr/bin/php bin/magento setup:cron:run >> var/log/setup.cron.log)'
+    cron_file: '{{ project.name }}'
+    user: 'vagrant'

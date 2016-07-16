@@ -34,3 +34,8 @@
     path: '{{ _empty_project_folders.stdout }}'
     state: absent
   when: _empty_project_folders.stdout is defined
+
+- name: Remove crontab files
+  file:
+    path: '/etc/cron.d/{{ project.name }}'
+    state: absent
