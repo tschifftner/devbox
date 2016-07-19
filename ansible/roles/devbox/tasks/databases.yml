@@ -2,12 +2,12 @@
 
 - set_fact:
     _project_databases: '{{ (_project_databases | default([])) + item.databases | list }}'
-  when: item.remove is not defined or item.remove != true
+  when: (item.remove is not defined or item.remove != true) and item.databases is defined
   with_items: '{{ devbox_projects }}'
 
 - set_fact:
     _project_remove_databases: '{{ (_project_remove_databases | default([])) + item.databases | list }}'
-  when: item.remove is defined and item.remove == true
+  when: (item.remove is defined and item.remove == true) and item.databases is defined
   with_items: '{{ devbox_projects }}'
 
 - name: Create or update databases
