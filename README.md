@@ -86,69 +86,65 @@ vagrant ssh
 ## Vhost management
 
 ### Create and manage vhosts
- 
-Add new file ```ansible/group_vars/all/project.yml``` with the following
-content:
+
+Add every project to a own file:
 
 ```
----
-project_user: vagrant
+ansible/group_vars/devbox/demo.yml
+ansible/group_vars/devbox/demo2.yml
+...
+ansible/group_vars/devbox/any_other_repo.yml
+```
 
-devbox_projects:
-  - name: demo
+```
+# file ansible/group_vars/devbox/example.yml
+demo_project:
+    name: demo
     root: pub/
     environment: devbox
     server_alias: dev2.local
     databases: ['dev2_local', 'dev3_local']
     #remove: true
+    awscli:
+      - profilename: 'demo'
+        aws_access_key_id: 'XXXXXXXXXX'
+        aws_secret_access_key: 'XXXXXXXXXXXXXXXXXX'
+        region: 'eu-central-1'
     helper:
       - name: fullsync
         info: 'Synchronizes full media in projectstorage folder with aws s3'
         command: 'aws --profile demo s3 cp --recursive s3://bucket/demo/backup/production /home/projectstorage/demo/backup/production'
-
+    
       - name: fastsync
         info: 'Synchronises database but only files timestamp file'
         command: >
           aws --profile demo s3 cp --recursive s3://bucket/demo/backup/production/database /home/projectstorage/demo/backup/production/database &&
           aws --profile demo s3 cp s3://bucket/demo/backup/production/files/created.txt /home/projectstorage/demo/backup/production/files/created.txt
-
+    
       - name: reset
         info: 'Imports latest database and synchronises media files with projectstorage'
         command:  '/home/projectstorage/demo/bin/deploy/project_reset.sh -p /var/www/demo/devbox/releases/current/htdocs/ -s /home/projectstorage/demo/backup/production'
-
+    
       - name: cleanup
         info: 'Removes all releases except for current'
         command: '/home/projectstorage/demo/bin/deploy/cleanup.sh -r /var/www/demo/devbox/releases -n 1'
-
+    
       - name: install
         info: 'deploys full project including database import and media synchronisation'
         command: '/home/projectstorage/demo/bin/deploy/deploy.sh -d -e devbox -a demo -r s3://bucket/demo/builds/demo.de.tar.gz -t /var/www/demo/devbox'
+```
 
-  - name: demo2
-    environment: devbox
-    server_alias: devbox2.local
-    databases: ['devbox2']
-    remove: true
-
-  - name: magento2demo
-    type: magento2
-    environment: devbox
-    server_alias: magento2demo.local
-    databases: ['magento2demo']
-    awscli:
-      - profilename: 'magento2demo'
-        aws_access_key_id: 'XXXXXXXXXX'
-        aws_secret_access_key: 'XXXXXXXXXXXXXXXXXX'
-        region: 'eu-central-1'
-
-  - name: demo_project
+```
+# file ansible/group_vars/devbox/demo2.yml
+demo2_project:
+    name: demo2
     type: magento
     environment: devbox
-    server_alias: demo_project.local
-    databases: ['demo_project']
+    server_alias: demo2.local
+    databases: ['demo2']
     deploy_scripts: 'git@bitbucket.org:ambimax/magento-deployscripts.git'
     awscli:
-      - profilename: 'demo_project'
+      - profilename: 'demo2'
         aws_access_key_id: 'XXXXXXXXXX'
         aws_secret_access_key: 'XXXXXXXXXXXXXXXXXXXX'
         region: 'eu-central-1'
@@ -156,16 +152,22 @@ devbox_projects:
       Demo Project
       ====
       Update systemstorage
-      aws --profile demo_project s3 cp --recursive s3://bucket/demo_project/backup/production /home/projectstorage/demo_project/backup/production
+      aws --profile demo2 s3 cp --recursive s3://bucket/demo2/backup/production /home/projectstorage/demo2/backup/production
 
       Install
-      /home/projectstorage/demo_project/bin/deploy/deploy.sh -d -e devbox -a demo_project -r s3://bucket/demo_project/builds/demo_project.de.tar.gz -t /var/www/demo_project/devbox
+      /home/projectstorage/demo2/bin/deploy/deploy.sh -d -e devbox -a demo2 -r s3://bucket/demo2/builds/demo2.de.tar.gz -t /var/www/demo2/devbox
 ```
 
-_File can be named differently but will not be in .gitignore_
+### Add the projects you need to ```ansible/group_vars/devbox/_projects.yml```:
 
-Run ```/vagrant/ansible/provision.sh``` to create all projects
+```
+devbox_projects:
+  - '{{ demo_project }}'
+  - '{{ demo2_project }}'
+#  - '{{ any_other_repo }}'
+```
 
+Run ```/vagrant/ansible/update-projects.sh``` to create all projects
 
 ## Helper scripts
 

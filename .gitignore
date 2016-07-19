@@ -1,7 +1,7 @@
 .idea
 .vagrant
 ansible/playbook.retry
-ansible/group_vars/all/project.yml
+ansible/group_vars/devbox/
 
 ansible/roles/devbox/tasks/project-old
 ansible/roles/ansible-role-motd
