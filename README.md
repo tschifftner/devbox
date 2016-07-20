@@ -169,6 +169,41 @@ devbox_projects:
 
 Run ```/vagrant/ansible/update-projects.sh``` to create all projects
 
+## Encryption
+
+### Prepare
+To use encryption copy encryption key into your ~/.vault file
+and add the following line to your ~/.ansible.cfg
+```
+vault_password_file = ~/.vault
+```
+
+### Vault usage
+
+To store sensitive information use ```ansible/group_vars/devbox/vault.yml```
+and use your variables with a prefix:
+```
+vault_database_root_password: 'a-very-strong-password'
+```
+
+In your regular project file you can use this variable:
+```
+database_root_password: '{{ vault_database_root_password }}'
+```
+
+### Create your vault file
+```
+ansible-vault create vault.yml
+```
+
+### Edit your vault file
+```
+ansible-vault edit vault.yml
+```
+
+_You should never decrypt a file for editing as chances are high that
+you commit an unencrypted file to your git provider_
+
 ## Helper scripts
 
 Helper scripts are generated and can be called by entering the name of the project.
