@@ -22,6 +22,11 @@ def which(cmd)
     return nil
 end
 
+required_plugins = %w( vagrant-vbguest vagrant-sshfs )
+required_plugins.each do |plugin|
+  system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+end
+
 Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
@@ -60,5 +65,5 @@ Vagrant.configure("2") do |config|
         config.vm.provision :shell, path: "ansible/provision.sh", args: ["devbox"]
     end
 
-    config.vm.synced_folder "./", "/vagrant", type: "nfs"
+    config.vm.synced_folder "./", "/vagrant", type: "sshfs", sshfs_opts_append: "-o cache=no -o nonempty"
 end
