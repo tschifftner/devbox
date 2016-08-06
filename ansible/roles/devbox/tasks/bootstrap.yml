@@ -4,7 +4,7 @@
   template:
     src: bootstrap/default.conf
     dest: /etc/nginx/sites-enabled/default
-  notify: nginx reload
+  notify: reload nginx
 
 - name: Setup default html page
   template:
