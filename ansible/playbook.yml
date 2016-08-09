@@ -36,3 +36,4 @@
     - { role: tschifftner.awscli, tags: ['awscli'] }
     - { role: devbox, tags: ['devbox'] }
     - { role: tschifftner.motd, tags: ['motd'] }
+    - { role: tschifftner.projects, tags: ['projects'] }
