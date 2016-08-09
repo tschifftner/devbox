@@ -10,5 +10,6 @@
 - src: tschifftner.n98-magerun
 - src: tschifftner.nginx
 - src: tschifftner.php5-fpm
+- src: tschifftner.projects
 - src: tschifftner.redis
 - src: tschifftner.samba
